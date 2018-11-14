@@ -22,16 +22,28 @@ class CaseInfo(object):
         return self.excel.get_cell_value(row, col)
 
     def get_is_run(self, is_run, row):
+        flag = None
         col = self.excel.conf.get(self.col_section, is_run)
-        return self.excel.get_cell_value(row, col)
+        run = self.excel.get_cell_value(row, col)
+        if run == "yes":
+            flag = True
+        else:
+            flag = False
+        return flag
 
     def get_request_method(self, request_method, row):
         col = self.excel.conf.get(self.col_section, request_method)
         return self.excel.get_cell_value(row, col)
 
     def get_take_header(self, take_header, row):
+        flag = None
         col = self.excel.conf.get(self.col_section, take_header)
-        return self.excel.get_cell_value(row, col)
+        header_content = self.excel.get_cell_value(row, col)
+        if header_content == "yes":
+            flag = True
+        else:
+            flag = False
+        return flag
 
     def get_header(self, header):
         return self.json_data.get_field_value(header)

@@ -20,6 +20,7 @@ class ReqMethod(object):
         return res
 
     def req_send(self, method):
+        method = method.upper()
         if method == "GET":
             return self.get_method()
         elif method == "POST":
