@@ -15,6 +15,8 @@ class ReqMethod(object):
     def post_method(self):
         if self.header['content-type'] == 'application/json':
             res = requests.post(url=self.url, json=self.params, headers=self.header, verify=False)
+        elif self.header['content-type'] == 'multipart/form-data':
+            res = requests.post(url=self.url, files=self.params, headers=self.header, verify=False)
         else:
             res = requests.post(url=self.url, data=self.params, headers=self.header, verify=False)
         return res

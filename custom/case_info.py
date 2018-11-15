@@ -35,18 +35,9 @@ class CaseInfo(object):
         col = self.excel.conf.get(self.col_section, request_method)
         return self.excel.get_cell_value(row, col)
 
-    def get_take_header(self, take_header, row):
-        flag = None
+    def get_header(self, take_header, row):
         col = self.excel.conf.get(self.col_section, take_header)
-        header_content = self.excel.get_cell_value(row, col)
-        if header_content == "yes":
-            flag = True
-        else:
-            flag = False
-        return flag
-
-    def get_header(self, header):
-        return self.json_data.get_field_value(header)
+        return self.excel.get_cell_value(row, col)
 
     def get_depend_id(self, depend_id, row):
         col = self.excel.conf.get(self.col_section, depend_id)
