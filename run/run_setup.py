@@ -1,5 +1,6 @@
 #coding:utf-8
 
+import json
 from custom.case_info import CaseInfo
 from lib.request_method import ReqMethod
 
@@ -12,7 +13,7 @@ class RunCase(object):
         url = self.case_info.get_url(url, row)
         is_run = self.case_info.get_is_run(is_run, row)
         request_method = self.case_info.get_request_method(request_method, row)
-        header = self.case_info.get_header(header, row)
+        header = json.loads(self.case_info.get_header(header, row))
         params = self.case_info.get_request_data(request_field, row)
         if is_run:
             if header != None:

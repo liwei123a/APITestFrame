@@ -66,3 +66,7 @@ class CaseInfo(object):
     def update_actual_result(self, actual_result, row, value):
         col = self.excel.conf.get(self.col_section, actual_result)
         return self.excel.write_cell_value(row, col, value)
+
+    def get_row(self, col, cell_value):
+        col_values = self.excel.get_col_values(col)
+        return col_values.index(cell_value)

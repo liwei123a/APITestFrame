@@ -29,4 +29,7 @@ class OperationExcel(object):
         tablecopy.write(int(row), int(col), value)
         tablescopy.save(self.file)
 
+    def get_col_values(self, col):
+        return self.table.col_values(col)
+
 # excel = OperationExcel('../config/data_source.ini', 'path', 'case_dir', 'file', 'case_file', 0)
