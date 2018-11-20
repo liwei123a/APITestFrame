@@ -27,18 +27,32 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         colsec = 'columns'
         cls.run_case = RunCase(datadir, dirsec, dir1, dir2, namesec, file1, file2, sheet_id, colsec)
 
-    def test_UrineWeb_001(self):
-        func_name = sys._getframe().f_code.co_name
+    def get_result(self, func_name):
         case_id = re.findall(r'test_(\w+)', func_name)[0].replace('_', '-')
         row = self.run_case.case_info.get_row(0, case_id)
-        res = self.run_case.configuration_parameter(self.url, self.is_run, self.request_method, self.header, self.request_field, row)
+        res = self.run_case.execution_request(self.url, self.is_run, self.request_method, self.header,
+                                              self.request_field, row)
         expect_result = self.run_case.case_info.get_expect_result(self.expect_result, row)
+        return expect_result, res, row
+
+    def update_result(self, row, value):
+        self.run_case.case_info.update_actual_result(self.actual_result, row, value)
+
+    def test_UrineWeb_001(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
         actual_result = res.json()['errmsg']
         if actual_result in expect_result:
-            self.run_case.case_info.update_actual_result(self.actual_result, row, 'pass')
+            self.update_result(row, 'pass')
         else:
-            self.run_case.case_info.update_actual_result(self.actual_result, row, 'fail')
+            self.update_result(row, 'fail')
         self.assertIn(actual_result, expect_result)
+
+    def test_UrineWeb_002(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='D:\\interface'))
