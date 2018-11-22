@@ -15,4 +15,3 @@ class OperationJson(object):
             d = json.load(f)
         return d[field]
 
-# oj = OperationJson('../config/data_source.ini', 'path', 'data_dir', 'file', 'data_file')

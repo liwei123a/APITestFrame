@@ -32,4 +32,3 @@ class OperationExcel(object):
     def get_col_values(self, col):
         return self.table.col_values(col)
 
-# excel = OperationExcel('../config/data_source.ini', 'path', 'case_dir', 'file', 'case_file', 0)

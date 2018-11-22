@@ -37,7 +37,11 @@ class CaseInfo(object):
 
     def get_header(self, take_header, row):
         col = self.excel.conf.get(self.col_section, take_header)
-        return self.excel.get_cell_value(row, col)
+        header = self.excel.get_cell_value(row, col)
+        if header == '':
+            return None
+        else:
+            return header
 
     def get_depend_id(self, depend_id, row):
         col = self.excel.conf.get(self.col_section, depend_id)
@@ -57,7 +61,10 @@ class CaseInfo(object):
 
     def get_request_data(self, request_field, row):
         field = self.get_request_field(request_field, row)
-        return self.json_data.get_field_value(field)
+        if field != '':
+            return self.json_data.get_field_value(field)
+        else:
+            return None
 
     def get_expect_result(self, expect_result, row):
         col = self.excel.conf.get(self.col_section, expect_result)
