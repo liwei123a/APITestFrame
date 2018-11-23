@@ -4,7 +4,6 @@ import sys
 import re
 from run.run_setup import RunCase
 
-
 cookies = None
 
 class UrineWebInterfaceTestCase(unittest.TestCase):
@@ -60,6 +59,24 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         self.update_result(row, actual_result, expect_result)
 
     def test_UrineWeb_003(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        actual_result = res[0].json()['errmsg']
+        self.update_result(row, actual_result, expect_result)
+
+    def test_UrineWeb_004(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        actual_result = res[0].json()['errmsg']
+        self.update_result(row, actual_result, expect_result)
+
+    def test_UrineWeb_005(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        actual_result = res[0].json()['errmsg']
+        self.update_result(row, actual_result, expect_result)
+
+    def test_UrineWeb_006(self):
         func_name = sys._getframe().f_code.co_name
         expect_result, res, row = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']

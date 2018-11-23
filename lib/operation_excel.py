@@ -5,6 +5,7 @@ import os
 import configparser
 from xlutils.copy import copy
 
+
 class OperationExcel(object):
     def __init__(self, datadir, dirsec, filedir, namesec, filename, sheetID):
         self.conf = configparser.ConfigParser()
