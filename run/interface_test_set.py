@@ -2,6 +2,7 @@ import unittest
 import HtmlTestRunner
 import sys
 import re
+import json
 from run.run_setup import RunCase
 
 cookies = None
@@ -81,6 +82,16 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         expect_result, res, row = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
         self.update_result(row, actual_result, expect_result)
+
+    @unittest.skip('获取七牛token 无需单独执行')
+    def test_UrineWeb_007(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        return res.json()
+
+    def test_UrineWeb_008(self):
+        pass
+
 
 if __name__ == '__main__':
     unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='D:\\interface'))
