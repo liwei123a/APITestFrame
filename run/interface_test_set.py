@@ -4,6 +4,7 @@ import sys
 import re
 import json
 from run.run_setup import RunCase
+from lib.read_config import ConfReader
 
 cookies = None
 
@@ -16,25 +17,27 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
     request_field = 'request_field'
     expect_result = 'expect_result'
     actual_result = 'actual_result'
+    datadir = '../config/data_source.ini'
+    dirsec = 'path'
+    dir1 = 'case_dir'
+    dir2 = 'data_dir'
+    dir3 = 'pic_dir'
+    namesec = 'file'
+    file1 = 'case_file'
+    file2 = 'data_file'
+    file3 = 'pic_file'
+    sheet_id = 0
+    colsec = 'columns'
 
     @classmethod
     def setUpClass(cls):
-        datadir = '../config/data_source.ini'
-        dirsec = 'path'
-        dir1 = 'case_dir'
-        dir2 = 'data_dir'
-        namesec = 'file'
-        file1 = 'case_file'
-        file2 = 'data_file'
-        sheet_id = 0
-        colsec = 'columns'
-        cls.run_case = RunCase(datadir, dirsec, dir1, dir2, namesec, file1, file2, sheet_id, colsec)
+        cls.run_case = RunCase(cls.datadir, cls.dirsec, cls.dir1, cls.dir2, cls.namesec, cls.file1, cls.file2, cls.sheet_id, cls.colsec)
 
-    def get_result(self, func_name):
+    def get_result(self, func_name, fileparams=None):
         case_id = re.findall(r'test_(\w+)', func_name)[0].replace('_', '-')
         row = self.run_case.case_info.get_row(0, case_id)
         res = self.run_case.execution_request(self.url, self.is_run, self.request_method, self.header,
-                                              self.request_field, row, cookies)
+                                              self.request_field, fileparams, row, cookies)
         expect_result = self.run_case.case_info.get_expect_result(self.expect_result, row)
         return expect_result, res, row
 
@@ -83,14 +86,24 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         actual_result = res[0].json()['errmsg']
         self.update_result(row, actual_result, expect_result)
 
-    @unittest.skip('获取七牛token 无需单独执行')
+    # @unittest.skip('获取七牛token 无需单独执行')
     def test_UrineWeb_007(self):
         func_name = sys._getframe().f_code.co_name
         expect_result, res, row = self.get_result(func_name)
-        return res.json()
+        return res[0].json()
 
     def test_UrineWeb_008(self):
-        pass
+        token = self.test_UrineWeb_007()['data']['token']
+        conf_read = ConfReader(self.datadir, self.dirsec, self.dir3, self.namesec, self.file3)
+        file_path = conf_read.get_file_path()
+        file_name = conf_read.get_file_name()
+        fileparams = {
+            'token': (None, token),
+            'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
+        }
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name, fileparams)
+        print(res[0].json())
 
 
 if __name__ == '__main__':
@@ -102,4 +115,3 @@ if __name__ == '__main__':
     # filepath = "D:\\interface"
     # runner = HtmlTestRunner.HTMLTestRunner(output=filepath)
     # runner.run(suite)
-
