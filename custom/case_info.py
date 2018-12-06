@@ -21,15 +21,15 @@ class CaseInfo(object):
         col = self.excel.conf.get(self.col_section, url)
         return self.excel.get_cell_value(row, col)
 
-    def get_is_run(self, is_run, row):
-        flag = None
-        col = self.excel.conf.get(self.col_section, is_run)
-        run = self.excel.get_cell_value(row, col)
-        if run == "yes":
-            flag = True
-        else:
-            flag = False
-        return flag
+    # def get_is_run(self, is_run, row):
+    #     flag = None
+    #     col = self.excel.conf.get(self.col_section, is_run)
+    #     run = self.excel.get_cell_value(row, col)
+    #     if run == "yes":
+    #         flag = True
+    #     else:
+    #         flag = False
+    #     return flag
 
     def get_request_method(self, request_method, row):
         col = self.excel.conf.get(self.col_section, request_method)
@@ -43,8 +43,8 @@ class CaseInfo(object):
         else:
             return header
 
-    def get_depend_id(self, depend_id, row):
-        col = self.excel.conf.get(self.col_section, depend_id)
+    def get_depend_interface(self, depend_interface, row):
+        col = self.excel.conf.get(self.col_section, depend_interface)
         return self.excel.get_cell_value(row, col)
 
     def get_depend_data(self, depend_data, row):
@@ -74,6 +74,14 @@ class CaseInfo(object):
         col = self.excel.conf.get(self.col_section, actual_result)
         return self.excel.write_cell_value(row, col, value)
 
-    def get_row(self, col, cell_value):
+    def get_row_index(self, col, cell_value):
         col_values = self.excel.get_col_values(col)
-        return col_values.index(cell_value)
+        row_index = None
+        for x in col_values:
+            if cell_value in x:
+                row_index = col_values.index(x)
+        return row_index
+
+    def get_col_index(self, col_name):
+        col_index = int(self.excel.conf.get(self.col_section, col_name))
+        return col_index
