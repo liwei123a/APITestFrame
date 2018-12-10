@@ -50,7 +50,12 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         col_index = self.run_case.case_info.get_col_index(self.url)
         row = self.run_case.case_info.get_row_index(col_index, case_url)
         depend_interface = self.run_case.case_info.get_depend_interface(self.depend_interface, row)
-        
+        pre_funcname = 'test' + depend_interface.replace('/', '_')
+        depend_json_data = eval('self.' + pre_funcname + '()')
+        depend_field = self.run_case.case_info.get_depend_field(self.depend_field, row)
+        depend_data = self.run_case.case_info.get_depend_field(self.depend_data, row)
+        depend_params = depend_json_data[depend_field][depend_data]
+        return depend_params
 
     def update_result(self, row, actual_result, expect_result):
         if actual_result in expect_result:
@@ -104,7 +109,8 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         return res[0].json()
 
     def test_upload(self):
-        token = self.test_web_urine_v2_qiniu_getToken()['data']['token']
+        func_name = sys._getframe().f_code.co_name
+        token = self.get_depend_params(func_name)
         conf_read = ConfReader(self.datadir, self.dirsec, self.dir3, self.namesec, self.file3)
         file_path = conf_read.get_file_path()
         file_name = conf_read.get_file_name()
@@ -112,7 +118,6 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
             'token': (None, token),
             'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
         }
-        func_name = sys._getframe().f_code.co_name
         expect_result, res, row = self.get_result(func_name, fileparams)
         return res[0].json()
 
