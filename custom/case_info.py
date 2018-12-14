@@ -53,7 +53,11 @@ class CaseInfo(object):
 
     def get_depend_field(self, depend_field, row):
         col = self.excel.conf.get(self.col_section, depend_field)
-        return self.excel.get_cell_value(row, col)
+        depend_field = self.excel.get_cell_value(row, col)
+        if depend_field == '':
+            return None
+        else:
+            return depend_field
 
     def get_request_field(self, request_field, row):
         col = self.excel.conf.get(self.col_section, request_field)
