@@ -11,10 +11,10 @@ class LoginSystem(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
+        gl._init()
         expect_result, res, row = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
         self.update_result(row, actual_result, expect_result)
-        # gl._init()
         gl.set_value('cookies', res[1])
         # global cookies
         # cookies = res[1]u

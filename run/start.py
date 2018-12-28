@@ -1,11 +1,6 @@
-# import unittest
-# import HtmlTestRunner
-# from run.test_interface_set import UrineWebInterfaceTestCase
-from utx import *
+#coding:utf-8
 
-# class MyTestCase(unittest.TestCase):
-#     def test_something(self):
-#         self.assertEqual(True, False)
+from utx import *
 
 
 if __name__ == '__main__':
