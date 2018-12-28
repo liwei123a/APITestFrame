@@ -6,6 +6,8 @@ import json
 import random
 from run.run_setup import RunCase
 from lib.read_config import ConfReader
+from lib.cmp import cmp
+from utx import *
 
 cookies = None
 
@@ -53,7 +55,10 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
     def get_depend_params(self, func_name):
         row = self.get_case_row_index(func_name)
         depend_interface = self.run_case.case_info.get_depend_interface(self.depend_interface, row)
-        pre_funcname = 'test' + depend_interface.replace('/', '_')
+        pre_funcname = depend_interface.replace('/', '_')
+        for func in dir(self):
+            if pre_funcname in func:
+                pre_funcname = func
         depend_json_data = eval('self.' + pre_funcname + '()')
         depend_field = self.run_case.case_info.get_depend_field(self.depend_field, row)
         depend_data = self.run_case.case_info.get_depend_field(self.depend_data, row)
@@ -143,12 +148,43 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         actual_result = res[0].json()['data']
         self.update_result(row, actual_result, expect_result)
 
+    def test_web_urine_v2_goodsInfo_queryGoodsInfos(self):
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        actual_result = res[0].json()['errmsg']
+        self.update_result(row, actual_result, expect_result)
+        return res[0].json()
+
+    def test_web_urine_v2_goodsInfo_removeGoodsInfo(self):
+        func_name = sys._getframe().f_code.co_name
+        row = self.get_case_row_index(func_name)
+        goods_info = self.run_case.case_info.get_request_data(self.request_field, row)
+        goods_name = goods_info['goodsName']
+        goods_id = goods_info['keyID']
+        goods_list = self.get_depend_params(func_name)
+        for goods in goods_list:
+            if goods['goodsName'] == goods_name:
+                goods_id = goods['keyID']
+        request_data = {}
+        request_data['keyID'] = goods_id
+        expect_result, res, row = self.get_result(func_name, var_params=request_data)
+        actual_result = res[0].json()['data']
+        self.update_result(row, actual_result, expect_result)
+
 if __name__ == '__main__':
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='D:\\interface'))
+    # loader = unittest.TestLoader()
+    # ln = lambda f: getattr(UrineWebInterfaceTestCase, f).im_func.func_code.co_firstlineno
+    # lncmp = lambda a,b: cmp(ln(a), ln(b))
+    # loader.sortTestMethodsUsing = lncmp
+    # unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='D:\\interface'), testLoader=loader, verbosity=2)
     # unittest.main()
     # suite = unittest.TestSuite()
-    # suite.addTest(UrineWebInterfaceTestCase('test1'))
-    # suite.addTest(UrineWebInterfaceTestCase('test2'))
+    # suite.addTest(UrineWebInterfaceTestCase('test_web_urine_v2_adminInfo_login'))
+    # suite.addTest(UrineWebInterfaceTestCase('test_web_urine_v2_goodsInfo_removeGoodsInfo'))
     # filepath = "D:\\interface"
     # runner = HtmlTestRunner.HTMLTestRunner(output=filepath)
     # runner.run(suite)
+    runner = TestRunner()
+    runner.add_case_dir(r'testcase')
+    runner.run_test(report_title='接口自动化测试报告')
+
