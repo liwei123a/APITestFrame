@@ -16,5 +16,13 @@ class LoginSystem(UrineWebInterfaceTestCase):
         actual_result = res[0].json()['errmsg']
         self.update_result(row, actual_result, expect_result)
         gl.set_value('cookies', res[1])
-        # global cookies
-        # cookies = res[1]u
+
+    def test_web_urine_v2_adminInfo_modifyPassword(self):
+        """
+        修改登录密码
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        actual_result = res[0].json()['errmsg']
+        self.update_result(row, actual_result, expect_result)

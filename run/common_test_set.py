@@ -1,5 +1,6 @@
 import unittest
 import re
+import logging
 from run.run_setup import RunCase
 import run.globalvar as gl
 

@@ -80,11 +80,11 @@ class CaseInfo(object):
 
     def get_row_index(self, col, cell_value):
         col_values = self.excel.get_col_values(col)
-        row_index = None
+        row_index = []
         for x in col_values:
             if cell_value in x:
-                row_index = col_values.index(x)
-        return row_index
+                row_index.append(col_values.index(x))
+        return row_index[0]
 
     def get_col_index(self, col_name):
         col_index = int(self.excel.conf.get(self.col_section, col_name))
