@@ -4,8 +4,10 @@ import random
 import sys
 from lib.read_config import ConfReader
 from run.common_test_set import UrineWebInterfaceTestCase
+import run.globalvar as gl
 
 class CommodityManagement(UrineWebInterfaceTestCase):
+
     def test_web_urine_v2_qiniu_getToken(self):
         """
         获取七牛token
@@ -62,6 +64,25 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         self.update_result(row, actual_result, expect_result)
         return res[0].json()
 
+    def test_web_urine_v2_goodsInfo_updateGoodsInfo(self):
+        """
+        更新商品信息
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        row = self.get_case_row_index(func_name)
+        update_goods_info = self.run_case.case_info.get_request_data(self.request_field, row)
+        goods_name = update_goods_info['goodsName']
+        goods_list = self.get_depend_params(func_name)
+        for goods in goods_list:
+            if goods['goodsName'] == goods_name:
+                gl.set_value('goods_info', goods)
+        for data in update_goods_info:
+            gl.get_value('goods_info')[data] = update_goods_info[data]
+        expect_result, res, row = self.get_result(func_name, var_params=gl.get_value('goods_info'))
+        actual_result = res[0].json()['data']
+        self.update_result(row, actual_result, expect_result)
+
     def test_web_urine_v2_goodsInfo_removeGoodsInfo(self):
         """
         删除商品
@@ -70,14 +91,8 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
         goods_info = self.run_case.case_info.get_request_data(self.request_field, row)
-        goods_name = goods_info['goodsName']
-        goods_id = goods_info['keyID']
-        goods_list = self.get_depend_params(func_name)
-        for goods in goods_list:
-            if goods['goodsName'] == goods_name:
-                goods_id = goods['keyID']
-        request_data = {}
-        request_data['keyID'] = goods_id
-        expect_result, res, row = self.get_result(func_name, var_params=request_data)
+        for data in goods_info:
+            goods_info[data] = gl.get_value('goods_info')[data]
+        expect_result, res, row = self.get_result(func_name, var_params=goods_info)
         actual_result = res[0].json()['data']
         self.update_result(row, actual_result, expect_result)

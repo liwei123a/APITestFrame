@@ -30,15 +30,31 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """
+        从excel表格读取测试用例
+        :return:
+        """
         cls.run_case = RunCase(cls.datadir, cls.dirsec, cls.dir1, cls.dir2, cls.namesec, cls.file1, cls.file2, cls.sheet_id, cls.colsec)
 
     def get_case_row_index(self, func_name):
+        """
+        获取用例行号
+        :param func_name:
+        :return:
+        """
         case_url = re.findall(r'test(\w+)', func_name)[0].replace('_', '/')
         col_index = self.run_case.case_info.get_col_index(self.url)
         row = self.run_case.case_info.get_row_index(col_index, case_url)
         return row
 
     def get_result(self, func_name, fileparams=None, var_params=None):
+        """
+        执行用例，并返回结果
+        :param func_name:
+        :param fileparams:
+        :param var_params:
+        :return:
+        """
         row = self.get_case_row_index(func_name)
         cookies = gl.get_value('cookies')
         res = self.run_case.execution_request(self.url, self.request_method, self.header,
@@ -47,6 +63,11 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         return expect_result, res, row
 
     def get_depend_params(self, func_name):
+        """
+        获取依赖数据
+        :param func_name:
+        :return:
+        """
         row = self.get_case_row_index(func_name)
         depend_interface = self.run_case.case_info.get_depend_interface(self.depend_interface, row)
         pre_funcname = depend_interface.replace('/', '_')
@@ -64,6 +85,13 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         return depend_params
 
     def update_result(self, row, actual_result, expect_result):
+        """
+        更新excel表格测试结果并进行断言
+        :param row:
+        :param actual_result:
+        :param expect_result:
+        :return:
+        """
         if actual_result in expect_result:
             self.run_case.case_info.update_actual_result(self.actual_result, row, 'pass')
         else:
