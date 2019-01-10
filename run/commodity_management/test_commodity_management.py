@@ -8,39 +8,13 @@ import run.globalvar as gl
 
 class CommodityManagement(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_qiniu_getToken(self):
-        """
-        获取七牛token
-        :return:
-        """
-        func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
-        return res[0].json()
-
-    def test_upload(self):
-        """
-        上传文件
-        :return:
-        """
-        func_name = sys._getframe().f_code.co_name
-        token = self.get_depend_params(func_name)
-        conf_read = ConfReader(self.datadir, self.dirsec, self.dir3, self.namesec, self.file3)
-        file_path = conf_read.get_file_path()
-        file_name = conf_read.get_file_name()
-        fileparams = {
-            'token': (None, token),
-            'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
-        }
-        expect_result, res, row = self.get_result(func_name, fileparams=fileparams)
-        return res[0].json()
-
     def test_web_urine_v2_goodsInfo_saveGoodsInfo(self):
         """
         添加商品
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        hash = self.get_depend_params(func_name)
+        hash = gl.get_value('hash')
         row = self.get_case_row_index(func_name)
         request_data = self.run_case.case_info.get_request_data(self.request_field, row)
         for imgs in ['imgs', 'detailImgs', 'bigProductImgs', 'bigImgs']:

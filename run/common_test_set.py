@@ -1,6 +1,7 @@
 import unittest
 import re
-import logging
+import sys
+from lib.read_config import ConfReader
 from run.run_setup import RunCase
 import run.globalvar as gl
 
@@ -42,7 +43,11 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         :param func_name:
         :return:
         """
-        case_url = re.findall(r'test(\w+)', func_name)[0].replace('_', '/')
+        case_url = None
+        if 'test' in func_name:
+            case_url = re.findall(r'test(\w+)', func_name)[0].replace('_', '/')
+        else:
+            case_url = func_name.replace('_', '/')
         col_index = self.run_case.case_info.get_col_index(self.url)
         row = self.run_case.case_info.get_row_index(col_index, case_url)
         return row
@@ -75,6 +80,8 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
             if pre_funcname in func:
                 pre_funcname = func
         depend_json_data = eval('self.' + pre_funcname + '()')
+        print(pre_funcname)
+        print(depend_json_data)
         depend_field = self.run_case.case_info.get_depend_field(self.depend_field, row)
         depend_data = self.run_case.case_info.get_depend_field(self.depend_data, row)
         depend_params = None
@@ -97,3 +104,29 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         else:
             self.run_case.case_info.update_actual_result(self.actual_result, row, 'fail')
         self.assertIn(actual_result, expect_result)
+
+    def web_urine_v2_qiniu_getToken(self):
+        """
+        获取七牛token
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        expect_result, res, row = self.get_result(func_name)
+        return res[0].json()
+
+    def upload(self):
+        """
+        上传文件
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        token = self.web_urine_v2_qiniu_getToken()['data']['token']
+        conf_read = ConfReader(self.datadir, self.dirsec, self.dir3, self.namesec, self.file3)
+        file_path = conf_read.get_file_path()
+        file_name = conf_read.get_file_name()
+        fileparams = {
+            'token': (None, token),
+            'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
+        }
+        expect_result, res, row = self.get_result(func_name, fileparams=fileparams)
+        return res[0].json()
