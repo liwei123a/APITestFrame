@@ -1,4 +1,7 @@
 #coding:utf-8
+"""
+登录系统及修改密码
+"""
 
 import sys
 from run.common_test_set import UrineWebInterfaceTestCase

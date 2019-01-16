@@ -43,21 +43,21 @@ class CaseInfo(object):
         else:
             return header
 
-    def get_depend_interface(self, depend_interface, row):
-        col = self.excel.conf.get(self.col_section, depend_interface)
-        return self.excel.get_cell_value(row, col)
-
-    def get_depend_data(self, depend_data, row):
-        col = self.excel.conf.get(self.col_section, depend_data)
-        return self.excel.get_cell_value(row, col)
-
-    def get_depend_field(self, depend_field, row):
-        col = self.excel.conf.get(self.col_section, depend_field)
-        depend_field = self.excel.get_cell_value(row, col)
-        if depend_field == '':
-            return None
-        else:
-            return depend_field
+    # def get_depend_interface(self, depend_interface, row):
+    #     col = self.excel.conf.get(self.col_section, depend_interface)
+    #     return self.excel.get_cell_value(row, col)
+    #
+    # def get_depend_data(self, depend_data, row):
+    #     col = self.excel.conf.get(self.col_section, depend_data)
+    #     return self.excel.get_cell_value(row, col)
+    #
+    # def get_depend_field(self, depend_field, row):
+    #     col = self.excel.conf.get(self.col_section, depend_field)
+    #     depend_field = self.excel.get_cell_value(row, col)
+    #     if depend_field == '':
+    #         return None
+    #     else:
+    #         return depend_field
 
     def get_request_field(self, request_field, row):
         col = self.excel.conf.get(self.col_section, request_field)

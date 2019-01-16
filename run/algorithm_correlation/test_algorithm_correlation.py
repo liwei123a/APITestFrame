@@ -1,4 +1,8 @@
 #coding:utf-8
+"""
+尿检算法相关
+"""
+
 
 import sys
 import re

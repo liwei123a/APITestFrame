@@ -1,4 +1,8 @@
 #coding:utf-8
+"""
+退出系统
+"""
+
 
 import sys
 from run.common_test_set import UrineWebInterfaceTestCase

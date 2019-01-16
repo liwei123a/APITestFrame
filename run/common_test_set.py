@@ -11,9 +11,9 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
     url = 'url'
     request_method = 'request_method'
     header = 'header'
-    depend_interface = 'depend_interface'
-    depend_data = 'depend_data'
-    depend_field = 'depend_field'
+    # depend_interface = 'depend_interface'
+    # depend_data = 'depend_data'
+    # depend_field = 'depend_field'
     request_field = 'request_field'
     expect_result = 'expect_result'
     actual_result = 'actual_result'
@@ -67,29 +67,29 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         expect_result = self.run_case.case_info.get_expect_result(self.expect_result, row)
         return expect_result, res, row
 
-    def get_depend_params(self, func_name):
-        """
-        获取依赖数据
-        :param func_name:
-        :return:
-        """
-        row = self.get_case_row_index(func_name)
-        depend_interface = self.run_case.case_info.get_depend_interface(self.depend_interface, row)
-        pre_funcname = depend_interface.replace('/', '_')
-        for func in dir(self):
-            if pre_funcname in func:
-                pre_funcname = func
-        depend_json_data = eval('self.' + pre_funcname + '()')
-        print(pre_funcname)
-        print(depend_json_data)
-        depend_field = self.run_case.case_info.get_depend_field(self.depend_field, row)
-        depend_data = self.run_case.case_info.get_depend_field(self.depend_data, row)
-        depend_params = None
-        if depend_field:
-            depend_params = depend_json_data[depend_field][depend_data]
-        else:
-            depend_params = depend_json_data[depend_data]
-        return depend_params
+    # def get_depend_params(self, func_name):
+    #     """
+    #     获取依赖数据
+    #     :param func_name:
+    #     :return:
+    #     """
+    #     row = self.get_case_row_index(func_name)
+    #     depend_interface = self.run_case.case_info.get_depend_interface(self.depend_interface, row)
+    #     pre_funcname = depend_interface.replace('/', '_')
+    #     for func in dir(self):
+    #         if pre_funcname in func:
+    #             pre_funcname = func
+    #     depend_json_data = eval('self.' + pre_funcname + '()')
+    #     print(pre_funcname)
+    #     print(depend_json_data)
+    #     depend_field = self.run_case.case_info.get_depend_field(self.depend_field, row)
+    #     depend_data = self.run_case.case_info.get_depend_field(self.depend_data, row)
+    #     depend_params = None
+    #     if depend_field:
+    #         depend_params = depend_json_data[depend_field][depend_data]
+    #     else:
+    #         depend_params = depend_json_data[depend_data]
+    #     return depend_params
 
     def update_result(self, row, actual_result, expect_result):
         """

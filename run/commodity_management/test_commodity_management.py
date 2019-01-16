@@ -1,4 +1,8 @@
 #coding:utf-8
+"""
+商品管理
+"""
+
 
 import random
 import sys
@@ -36,7 +40,8 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         expect_result, res, row = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
         self.update_result(row, actual_result, expect_result)
-        return res[0].json()
+        gl.set_value('goods_list', res[0].json()['data']['list'])
+        # return res[0].json()
 
     def test_web_urine_v2_goodsInfo_updateGoodsInfo(self):
         """
@@ -47,7 +52,8 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         row = self.get_case_row_index(func_name)
         update_goods_info = self.run_case.case_info.get_request_data(self.request_field, row)
         goods_name = update_goods_info['goodsName']
-        goods_list = self.get_depend_params(func_name)
+        # goods_list = self.get_depend_params(func_name)
+        goods_list = gl.get_value('goods_list')
         for goods in goods_list:
             if goods['goodsName'] == goods_name:
                 gl.set_value('goods_info', goods)
