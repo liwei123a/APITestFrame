@@ -121,9 +121,9 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         """
         func_name = sys._getframe().f_code.co_name
         token = self.web_urine_v2_qiniu_getToken()['data']['token']
-        conf_read = ConfReader(self.datadir, self.dirsec, self.dir3, self.namesec, self.file3)
-        file_path = conf_read.get_file_path()
-        file_name = conf_read.get_file_name()
+        conf_read = ConfReader(self.datadir)
+        file_path = conf_read.get_file_path( self.dirsec, self.dir3, self.namesec, self.file3)
+        file_name = conf_read.get_file_name( self.namesec, self.file3)
         fileparams = {
             'token': (None, token),
             'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
