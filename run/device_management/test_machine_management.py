@@ -52,7 +52,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         func_name = sys._getframe().f_code.co_name
         expect_result, res, row = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
-        gl.set_value('adImagePackList', res[0].json()['data'])
+        gl.set_value('adImagePackList', res[0].json()['data']['list'])
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_adImageStrategy_listByPage(self):
@@ -197,7 +197,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         row = self.get_case_row_index(func_name)
         mac_h5_version = self.run_case.case_info.get_request_data(self.request_field, row)
         mac_h5_version['adPlanId'] = random.sample(gl.get_value('adPlanList'), 1)[0]['keyID']
-        mac_h5_version['adImagePackId'] = random.sample(gl.get_value('adImagePackList'), 1)[0]['KeyID']
+        mac_h5_version['adImagePackId'] = random.sample(gl.get_value('adImagePackList'), 1)[0]['keyID']
         expect_result, res, row = self.get_result(func_name, var_params=mac_h5_version)
         actual_result = res[0].json()['errmsg']
         self.update_result(row, actual_result, expect_result)
