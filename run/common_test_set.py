@@ -64,8 +64,27 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         cookies = gl.get_value('cookies')
         res = self.run_case.execution_request(self.url, self.request_method, self.header,
                                               self.request_field, fileparams, var_params, row, cookies)
+        return res
+
+    def get_expect_result(self, func_name):
+        """
+        获取预期结果
+        :param func_name:
+        :return:
+        """
+        row = self.get_case_row_index(func_name)
         expect_result = self.run_case.case_info.get_expect_result(self.expect_result, row)
-        return expect_result, res, row
+        return expect_result
+
+    def get_request_data(self, func_name):
+        """
+        获取请求参数
+        :param func_name:
+        :return:
+        """
+        row = self.get_case_row_index(func_name)
+        request_data = self.run_case.case_info.get_request_data(self.request_field, row)
+        return request_data
 
     # def get_depend_params(self, func_name):
     #     """
@@ -111,7 +130,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         return res[0].json()
 
     def upload(self):
@@ -128,5 +147,14 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
             'token': (None, token),
             'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
         }
-        expect_result, res, row = self.get_result(func_name, fileparams=fileparams)
+        res = self.get_result(func_name, fileparams=fileparams)
         return res[0].json()
+
+    def web_urine_v2_cityAreaSettingInfo_getAllCitys(self):
+        """
+        获取城市列表
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        res = self.get_result(func_name)
+        return res[0].json()['data']

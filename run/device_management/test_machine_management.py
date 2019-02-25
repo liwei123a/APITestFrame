@@ -30,8 +30,10 @@ class MachineManagement(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
+        row = self.get_case_row_index(func_name)
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_goodsInfo_queryAllGoodsInfo(self):
@@ -40,8 +42,10 @@ class MachineManagement(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
+        row = self.get_case_row_index(func_name)
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_MacActvImageMainInfo_query(self):
@@ -50,8 +54,10 @@ class MachineManagement(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
+        row = self.get_case_row_index(func_name)
+        expect_result = self.get_expect_result(func_name)
         gl.set_value('adImagePackList', res[0].json()['data']['list'])
         self.update_result(row, actual_result, expect_result)
 
@@ -61,9 +67,11 @@ class MachineManagement(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
         gl.set_value('adPlanList', res[0].json()['data']['list'])
+        row = self.get_case_row_index(func_name)
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_machineInfo_addMachine(self):
@@ -73,11 +81,12 @@ class MachineManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        add_machine_info = self.run_case.case_info.get_request_data(self.request_field, row)
+        add_machine_info = self.get_request_data(func_name)
         gl.set_value('machineID', add_machine_info['machineID'])
         add_machine_info['addTime'] = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.localtime())
-        expect_result, res, row = self.get_result(func_name, var_params=add_machine_info)
+        res = self.get_result(func_name, var_params=add_machine_info)
         actual_result = res[0].json()['data']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_machineInfo_machineInfoList(self):
@@ -87,69 +96,128 @@ class MachineManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        query_machineinfo = self.run_case.case_info.get_request_data(self.request_field, row)
+        query_machineinfo = self.get_request_data(func_name)
         machineinfo_copy = query_machineinfo.copy()
         for k in machineinfo_copy.keys():
             machineinfo_copy[k] = None
         for data in ['pageNum', 'pageSize', 'totalCount']:
             machineinfo_copy[data] = query_machineinfo[data]
         query = machineinfo_copy
+        """默认查询所有机器"""
+        res = self.get_result(func_name, var_params=machineinfo_copy)
+        totalCount = res[0].json()['data']['totalCount']
+        self.assertTrue(totalCount>0)
         """根据机器编号查询"""
         query['machineID'] = query_machineinfo['machineID']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result1 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result1, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        expect_result = self.get_expect_result(func_name)
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
         gl.set_value('activityId', res[0].json()['data']['list'][0]['activityId'])
         gl.set_value('keyID', res[0].json()['data']['list'][0]['keyID'])
         """根据机器编号、网络状态查询"""
         query['isOnline'] = query_machineinfo['isOnline']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result2 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result2, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
         """根据机器编号、网络状态、故障状态查询"""
         query['troubleStatus'] = query_machineinfo['troubleStatus']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result3 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result3, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
         """根据机器编号、网络状态、故障状态、1号库存查询"""
         query['firstStockStatus'] = query_machineinfo['firstStockStatus']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result4 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result4, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
         """根据机器编号、网络状态、故障状态、1号库存、2号库存查询"""
         query['secondStockStatus'] = query_machineinfo['secondStockStatus']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result5 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result5, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondNoGoods'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondOutOfstock'])
         """根据机器编号、网络状态、故障状态、1号库存、2号库存、启用状态查询"""
         query['isEnable'] = query_machineinfo['isEnable']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result6 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result6, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondNoGoods'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondOutOfstock'])
+        self.assertEqual(query['isEnable'], actual_machineinfo['isEnable'])
         """根据机器编号、网络状态、故障状态、1号库存、2号库存、启用状态、城市查询"""
         query['cityID'] = query_machineinfo['cityID']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result7 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result7, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondNoGoods'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondOutOfstock'])
+        self.assertEqual(query['isEnable'], actual_machineinfo['isEnable'])
+        self.assertEqual(query['cityID'], actual_machineinfo['cityID'])
         """根据机器编号、网络状态、故障状态、1号库存、2号库存、启用状态、城市、商圈查询"""
         query['areaID'] = query_machineinfo['areaID']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result8 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result8, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondNoGoods'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondOutOfstock'])
+        self.assertEqual(query['isEnable'], actual_machineinfo['isEnable'])
+        self.assertEqual(query['cityID'], actual_machineinfo['cityID'])
+        self.assertEqual(query['areaID'], actual_machineinfo['areaID'])
         """根据机器编号、网络状态、故障状态、1号库存、2号库存、启用状态、城市、商圈、楼宇查询"""
         query['buildingID'] = query_machineinfo['buildingID']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result9 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result9, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondNoGoods'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondOutOfstock'])
+        self.assertEqual(query['isEnable'], actual_machineinfo['isEnable'])
+        self.assertEqual(query['cityID'], actual_machineinfo['cityID'])
+        self.assertEqual(query['areaID'], actual_machineinfo['areaID'])
+        self.assertEqual(query['buildingID'], actual_machineinfo['buildingID'])
         """根据机器编号、网络状态、故障状态、1号库存、2号库存、启用状态、城市、商圈、楼宇、卫生间查询"""
         query['sexType'] = query_machineinfo['sexType']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
-        result10 = res[0].json()['data']['list'][0]['machineID']
-        self.assertIn(result10, expect_result)
-        """默认查询所有机器"""
-        expect_result, res, row = self.get_result(func_name, var_params=machineinfo_copy)
-        default_result = res[0].json()['data']['list'][0]['machineID']
-        self.update_result(row, default_result, expect_result)
+        res = self.get_result(func_name, var_params=query)
+        actual_machineinfo = res[0].json()['data']['list'][0]
+        self.assertIn(actual_machineinfo['machineID'], expect_result)
+        self.assertEqual(query['isOnline'], actual_machineinfo['isOnline'])
+        self.assertEqual(query['troubleStatus'], actual_machineinfo['troubleStatus'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstNoGoods'])
+        self.assertEqual(query['firstStockStatus'], actual_machineinfo['firstOutOfstock'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondNoGoods'])
+        self.assertEqual(query['secondStockStatus'], actual_machineinfo['secondOutOfstock'])
+        self.assertEqual(query['isEnable'], actual_machineinfo['isEnable'])
+        self.assertEqual(query['cityID'], actual_machineinfo['cityID'])
+        self.assertEqual(query['areaID'], actual_machineinfo['areaID'])
+        self.assertEqual(query['buildingID'], actual_machineinfo['buildingID'])
+        self.assertEqual(query['sexType'], actual_machineinfo['sexType'])
 
     def test_web_urine_v2_machineInfo_updateMachine(self):
         """
@@ -158,11 +226,12 @@ class MachineManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        update_machine_info = self.run_case.case_info.get_request_data(self.request_field, row)
+        update_machine_info = self.get_request_data(func_name)
         update_machine_info['keyID'] = gl.get_value('keyID')
         update_machine_info['activityId'] = gl.get_value('activityId')
-        expect_result, res, row = self.get_result(func_name, var_params=update_machine_info)
+        res = self.get_result(func_name, var_params=update_machine_info)
         actual_result = res[0].json()['data']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_machineInfo_log(self):
@@ -171,8 +240,10 @@ class MachineManagement(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
+        row = self.get_case_row_index(func_name)
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_machineInfo_upIsEnable(self):
@@ -182,10 +253,11 @@ class MachineManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        upIsEnable = self.run_case.case_info.get_request_data(self.request_field, row)
+        upIsEnable = self.get_request_data(func_name)
         upIsEnable['keyID'] = gl.get_value('keyID')
-        expect_result, res, row = self.get_result(func_name, var_params=upIsEnable)
+        res = self.get_result(func_name, var_params=upIsEnable)
         actual_result = res[0].json()['data']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_machineInfo_batchSetMacH5Version(self):
@@ -195,11 +267,12 @@ class MachineManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        mac_h5_version = self.run_case.case_info.get_request_data(self.request_field, row)
+        mac_h5_version = self.get_request_data(func_name)
         mac_h5_version['adPlanId'] = random.sample(gl.get_value('adPlanList'), 1)[0]['keyID']
         mac_h5_version['adImagePackId'] = random.sample(gl.get_value('adImagePackList'), 1)[0]['keyID']
-        expect_result, res, row = self.get_result(func_name, var_params=mac_h5_version)
+        res = self.get_result(func_name, var_params=mac_h5_version)
         actual_result = res[0].json()['errmsg']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     @classmethod

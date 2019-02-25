@@ -20,15 +20,16 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         func_name = sys._getframe().f_code.co_name
         hash = gl.get_value('hash')
         row = self.get_case_row_index(func_name)
-        request_data = self.run_case.case_info.get_request_data(self.request_field, row)
+        request_data = self.get_request_data(func_name)
         for imgs in ['imgs', 'detailImgs', 'bigProductImgs', 'bigImgs']:
             request_data[imgs] += hash
         randomId = random.random()
         randomId_en = random.random()
         request_data['goodsScenes'][0]['randomId'] = randomId
         request_data['goodsScenesEn'][0]['randomId'] = randomId_en
-        expect_result, res, row = self.get_result(func_name, var_params=request_data)
+        res = self.get_result(func_name, var_params=request_data)
         actual_result = res[0].json()['data']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_goodsInfo_queryGoodsInfos(self):
@@ -37,8 +38,10 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        expect_result, res, row = self.get_result(func_name)
+        res = self.get_result(func_name)
         actual_result = res[0].json()['errmsg']
+        row = self.get_case_row_index(func_name)
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
         gl.set_value('goods_list', res[0].json()['data']['list'])
         # return res[0].json()
@@ -50,7 +53,7 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        update_goods_info = self.run_case.case_info.get_request_data(self.request_field, row)
+        update_goods_info = self.get_request_data(func_name)
         goods_name = update_goods_info['goodsName']
         # goods_list = self.get_depend_params(func_name)
         goods_list = gl.get_value('goods_list')
@@ -59,8 +62,9 @@ class CommodityManagement(UrineWebInterfaceTestCase):
                 gl.set_value('goods_info', goods)
         for data in update_goods_info:
             gl.get_value('goods_info')[data] = update_goods_info[data]
-        expect_result, res, row = self.get_result(func_name, var_params=gl.get_value('goods_info'))
+        res = self.get_result(func_name, var_params=gl.get_value('goods_info'))
         actual_result = res[0].json()['data']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
     def test_web_urine_v2_goodsInfo_removeGoodsInfo(self):
@@ -70,9 +74,10 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        goods_info = self.run_case.case_info.get_request_data(self.request_field, row)
+        goods_info = self.get_request_data(func_name)
         for data in goods_info:
             goods_info[data] = gl.get_value('goods_info')[data]
-        expect_result, res, row = self.get_result(func_name, var_params=goods_info)
+        res = self.get_result(func_name, var_params=goods_info)
         actual_result = res[0].json()['data']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)

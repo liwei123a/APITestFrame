@@ -16,7 +16,7 @@ class UrineHealthChecklist(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        query_urineinfo = self.run_case.case_info.get_request_data(self.request_field, row)
+        query_urineinfo = self.get_request_data(func_name)
         urineinfo_copy = query_urineinfo.copy()
         for k in urineinfo_copy.keys():
             urineinfo_copy[k] = None
@@ -25,24 +25,25 @@ class UrineHealthChecklist(UrineWebInterfaceTestCase):
         query = urineinfo_copy
         """根据手机号查询"""
         query['phone'] = query_urineinfo['phone']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
+        res = self.get_result(func_name, var_params=query)
         totalCount = res[0].json()['data']['totalCount']
+        expect_result = self.get_expect_result(func_name)
         result1 = eval(expect_result)
         self.assertTrue(result1)
         """根据手机号、检测机器查询"""
         query['machineID'] = query_urineinfo['machineID']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
+        res = self.get_result(func_name, var_params=query)
         totalCount = res[0].json()['data']['totalCount']
         result2 = eval(expect_result)
         self.assertTrue(result2)
         """根据手机号、检测机器、检测状态查询"""
         query['checkStatus'] = query_urineinfo['checkStatus']
-        expect_result, res, row = self.get_result(func_name, var_params=query)
+        res = self.get_result(func_name, var_params=query)
         totalCount = res[0].json()['data']['totalCount']
         result3 = eval(expect_result)
         self.assertTrue(result3)
         """默认查询所有记录"""
-        expect_result, res, row = self.get_result(func_name, var_params=urineinfo_copy)
+        res = self.get_result(func_name, var_params=urineinfo_copy)
         totalCount = res[0].json()['data']['totalCount']
         default_result = eval(expect_result)
         self.assertTrue(default_result)
@@ -59,9 +60,10 @@ class UrineHealthChecklist(UrineWebInterfaceTestCase):
         """
         func_name = sys._getframe().f_code.co_name
         row = self.get_case_row_index(func_name)
-        mac_token = self.run_case.case_info.get_request_data(self.request_field, row)
+        mac_token = self.get_request_data(func_name)
         urineinfolist = gl.get_value('urineinfolist')
         mac_token['macToken'] = random.sample(urineinfolist, 1)[0]['macToken']
-        expect_result, res, row = self.get_result(func_name, var_params=mac_token)
+        res = self.get_result(func_name, var_params=mac_token)
         actual_result = res[0].json()['errmsg']
+        expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
