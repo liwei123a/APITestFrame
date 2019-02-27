@@ -23,6 +23,11 @@ class OrderList(UrineWebInterfaceTestCase):
             orderlist_copy[data] = query_orderlist[data]
         query = orderlist_copy
         expect_result = self.get_expect_result(func_name)
+        """默认查询所有订单"""
+        res = self.get_result(func_name, var_params=orderlist_copy)
+        totalCount = res[0].json()['data']['totalCount']
+        default_result = eval(expect_result)
+        self.assertTrue(default_result)
         """根据手机号查询"""
         query['phone'] = query_orderlist['phone']
         res = self.get_result(func_name, var_params=query)
@@ -54,36 +59,51 @@ class OrderList(UrineWebInterfaceTestCase):
             self.assertEqual(city_name, order['cityName'])
         """根据手机号、商品名称、城市、楼宇查询"""
         query['buildingId'] = query_orderlist['buildingId']
+        building_list = self.web_urine_v2_buildingInfo_queryAllBuildingInfo()
+        building_name = None
+        for building in building_list:
+            if building['keyID'] == query['buildingId'][0]:
+                building_name = building['buildingName']
         res = self.get_result(func_name, var_params=query)
         order_list = res[0].json()['data']['list']
         for order in order_list:
             self.assertEqual(query['phone'], order['phone'])
             self.assertEqual(query['checkType'], order['checkType'])
             self.assertEqual(city_name, order['cityName'])
-            self.assertEqual(query['buildingId'], order[''])
+            self.assertEqual(building_name, order['buildingName'])
         """根据手机号、商品名称、城市、楼宇、订单状态查询"""
         query['payStatus'] = query_orderlist['payStatus']
         res = self.get_result(func_name, var_params=query)
-        totalCount = res[0].json()['data']['totalCount']
-        result5 = eval(expect_result)
-        self.assertTrue(result5)
+        order_list = res[0].json()['data']['list']
+        for order in order_list:
+            self.assertEqual(query['phone'], order['phone'])
+            self.assertEqual(query['checkType'], order['checkType'])
+            self.assertEqual(city_name, order['cityName'])
+            self.assertEqual(building_name, order['buildingName'])
+            self.assertEqual(query['payStatus'], order['payStatus'])
         """根据手机号、商品名称、城市、楼宇、订单状态、购买机器查询"""
         query['machineID'] = query_orderlist['machineID']
         res = self.get_result(func_name, var_params=query)
-        totalCount = res[0].json()['data']['totalCount']
-        result6 = eval(expect_result)
-        self.assertTrue(result6)
+        order_list = res[0].json()['data']['list']
+        for order in order_list:
+            self.assertEqual(query['phone'], order['phone'])
+            self.assertEqual(query['checkType'], order['checkType'])
+            self.assertEqual(city_name, order['cityName'])
+            self.assertEqual(building_name, order['buildingName'])
+            self.assertEqual(query['payStatus'], order['payStatus'])
+            self.assertEqual(query['machineID'], order['machineID'])
         """根据手机号、商品名称、城市、楼宇、订单状态、购买机器、订单号查询"""
         query['outOrderID'] = query_orderlist['outOrderID']
         res = self.get_result(func_name, var_params=query)
-        totalCount = res[0].json()['data']['totalCount']
-        result7 = eval(expect_result)
-        self.assertTrue(result7)
-        """默认查询所有订单"""
-        res = self.get_result(func_name, var_params=orderlist_copy)
-        totalCount = res[0].json()['data']['totalCount']
-        default_result = eval(expect_result)
-        self.assertTrue(default_result)
+        order_list = res[0].json()['data']['list']
+        for order in order_list:
+            self.assertEqual(query['phone'], order['phone'])
+            self.assertEqual(query['checkType'], order['checkType'])
+            self.assertEqual(city_name, order['cityName'])
+            self.assertEqual(building_name, order['buildingName'])
+            self.assertEqual(query['payStatus'], order['payStatus'])
+            self.assertEqual(query['machineID'], order['machineID'])
+            self.assertEqual(query['outOrderID'], order['outOrderID'])
 
     def test_web_urine_v2_cityAreaSettingInfo_getAreaByCityID(self):
         """

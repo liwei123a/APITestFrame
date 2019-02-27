@@ -23,30 +23,36 @@ class UrineHealthChecklist(UrineWebInterfaceTestCase):
         for data in ['pageNum', 'pageSize', 'totalCount']:
             urineinfo_copy[data] = query_urineinfo[data]
         query = urineinfo_copy
+        """默认查询所有记录"""
+        res = self.get_result(func_name, var_params=urineinfo_copy)
+        totalCount = res[0].json()['data']['totalCount']
+        expect_result = self.get_expect_result(func_name)
+        default_result = eval(expect_result)
+        self.assertTrue(default_result)
         """根据手机号查询"""
         query['phone'] = query_urineinfo['phone']
         res = self.get_result(func_name, var_params=query)
         totalCount = res[0].json()['data']['totalCount']
-        expect_result = self.get_expect_result(func_name)
-        result1 = eval(expect_result)
-        self.assertTrue(result1)
+        query['pageSize'] = totalCount
+        res = self.get_result(func_name, var_params=query)
+        check_list = res[0].json()['data']['list']
+        for check in check_list:
+            self.assertEqual(query['phone'], check['phone'])
         """根据手机号、检测机器查询"""
         query['machineID'] = query_urineinfo['machineID']
         res = self.get_result(func_name, var_params=query)
-        totalCount = res[0].json()['data']['totalCount']
-        result2 = eval(expect_result)
-        self.assertTrue(result2)
+        check_list = res[0].json()['data']['list']
+        for check in check_list:
+            self.assertEqual(query['phone'], check['phone'])
+            self.assertEqual(query['machineID'], check['machineID'])
         """根据手机号、检测机器、检测状态查询"""
         query['checkStatus'] = query_urineinfo['checkStatus']
         res = self.get_result(func_name, var_params=query)
-        totalCount = res[0].json()['data']['totalCount']
-        result3 = eval(expect_result)
-        self.assertTrue(result3)
-        """默认查询所有记录"""
-        res = self.get_result(func_name, var_params=urineinfo_copy)
-        totalCount = res[0].json()['data']['totalCount']
-        default_result = eval(expect_result)
-        self.assertTrue(default_result)
+        check_list = res[0].json()['data']['list']
+        for check in check_list:
+            self.assertEqual(query['phone'], check['phone'])
+            self.assertEqual(query['machineID'], check['machineID'])
+            self.assertEqual(query['checkStatus'], check['checkStatus'])
         urineinfolist = res[0].json()['data']['list']
         for urineinfo in urineinfolist:
             if urineinfo['checkStatus'] != 1:

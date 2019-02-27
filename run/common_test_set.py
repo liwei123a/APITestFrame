@@ -158,3 +158,12 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         func_name = sys._getframe().f_code.co_name
         res = self.get_result(func_name)
         return res[0].json()['data']
+
+    def web_urine_v2_buildingInfo_queryAllBuildingInfo(self):
+        """
+        获取楼宇列表
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        res = self.get_result(func_name)
+        return res[0].json()['data']
