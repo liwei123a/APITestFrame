@@ -12,7 +12,7 @@ import run.globalvar as gl
 
 class CommodityManagement(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_goodsInfo_saveGoodsInfo(self):
+    def test_urine_v2_goodsInfo_saveGoodsInfo(self):
         """
         添加商品
         :return:
@@ -32,7 +32,7 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_goodsInfo_queryGoodsInfos(self):
+    def test_urine_v2_goodsInfo_queryGoodsInfos(self):
         """
         查询商品信息
         :return:
@@ -46,7 +46,7 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         gl.set_value('goods_list', res[0].json()['data']['list'])
         # return res[0].json()
 
-    def test_web_urine_v2_goodsInfo_updateGoodsInfo(self):
+    def test_urine_v2_goodsInfo_updateGoodsInfo(self):
         """
         更新商品信息
         :return:
@@ -67,7 +67,7 @@ class CommodityManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_goodsInfo_removeGoodsInfo(self):
+    def test_urine_v2_goodsInfo_removeGoodsInfo(self):
         """
         删除商品
         :return:

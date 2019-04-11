@@ -24,7 +24,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
     tables = ['MacH5VersionInfo', 'MachineBusiness', 'MachineInfo', 'MachineOnline', 'MachineStock',
               'GoodsSellRecordInfo']
 
-    def test_web_urine_v2_cityAreaSettingInfo_getAllCitys(self):
+    def test_urine_v2_cityAreaSettingInfo_getAllCitys(self):
         """
         获取城市列表
         :return:
@@ -36,7 +36,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_goodsInfo_queryAllGoodsInfo(self):
+    def test_urine_v2_goodsInfo_queryAllGoodsInfo(self):
         """
         获取商品列表
         :return:
@@ -48,7 +48,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_MacActvImageMainInfo_query(self):
+    def test_urine_v2_MacActvImageMainInfo_query(self):
         """
         查询广告图组列表
         :return:
@@ -61,7 +61,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         gl.set_value('adImagePackList', res[0].json()['data']['list'])
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_adImageStrategy_listByPage(self):
+    def test_urine_v2_adImageStrategy_listByPage(self):
         """
         查询图片广告策略列表
         :return:
@@ -74,7 +74,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_machineInfo_addMachine(self):
+    def test_urine_v2_machineInfo_addMachine(self):
         """
         添加机器
         :return:
@@ -89,7 +89,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_machineInfo_machineInfoList(self):
+    def test_urine_v2_machineInfo_machineInfoList(self):
         """
         查询机器
         :return:
@@ -219,7 +219,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         self.assertEqual(query['buildingID'], actual_machineinfo['buildingID'])
         self.assertEqual(query['sexType'], actual_machineinfo['sexType'])
 
-    def test_web_urine_v2_machineInfo_updateMachine(self):
+    def test_urine_v2_machineInfo_updateMachine(self):
         """
         更新机器信息
         :return:
@@ -234,7 +234,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_machineInfo_log(self):
+    def test_urine_v2_machineInfo_log(self):
         """
         查询机器日志
         :return:
@@ -246,7 +246,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_machineInfo_upIsEnable(self):
+    def test_urine_v2_machineInfo_upIsEnable(self):
         """
         启用禁用机器
         :return:
@@ -260,7 +260,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_machineInfo_batchSetMacH5Version(self):
+    def test_urine_v2_machineInfo_batchSetMacH5Version(self):
         """
         批量管理首页
         :return:

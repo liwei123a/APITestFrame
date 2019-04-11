@@ -10,7 +10,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class AdvertisingMapManagement(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_MacActvImageMainInfo_save(self):
+    def test_urine_v2_MacActvImageMainInfo_save(self):
         """
         添加广告图组
         :return:
@@ -25,7 +25,7 @@ class AdvertisingMapManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_MacActvImageMainInfo_queryMacActvImageMainInfos(self):
+    def test_urine_v2_MacActvImageMainInfo_queryMacActvImageMainInfos(self):
         """
         广告图组列表
         :return:
@@ -38,7 +38,7 @@ class AdvertisingMapManagement(UrineWebInterfaceTestCase):
         self.update_result(row, actual_result, expect_result)
         gl.set_value('imageinfo_list', res[0].json()['data']['list'])
 
-    def test_web_urine_v2_MacActvImageMainInfo_update(self):
+    def test_urine_v2_MacActvImageMainInfo_update(self):
         """
         修改广告图组
         :return:
@@ -75,7 +75,7 @@ class AdvertisingMapManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_MacActvImageMainInfo_remove(self):
+    def test_urine_v2_MacActvImageMainInfo_remove(self):
         """
         删除广告图组
         :return:

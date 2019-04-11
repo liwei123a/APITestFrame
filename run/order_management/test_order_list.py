@@ -8,7 +8,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class OrderList(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_order_getUrineOrderList(self):
+    def test_urine_v2_order_getUrineOrderList(self):
         """
         查询订单
         :return:
@@ -105,7 +105,7 @@ class OrderList(UrineWebInterfaceTestCase):
             self.assertEqual(query['machineID'], order['machineID'])
             self.assertEqual(query['outOrderID'], order['outOrderID'])
 
-    def test_web_urine_v2_cityAreaSettingInfo_getAreaByCityID(self):
+    def test_urine_v2_cityAreaSettingInfo_getAreaByCityID(self):
         """
         查询商圈
         :return:
@@ -117,7 +117,7 @@ class OrderList(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_buildingInfo_queryAllBuildingInfo(self):
+    def test_urine_v2_buildingInfo_queryAllBuildingInfo(self):
         """
         查询楼宇
         :return:

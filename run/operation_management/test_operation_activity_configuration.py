@@ -9,7 +9,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class OperationActivityConfiguration(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_activityInfo_list(self):
+    def test_urine_v2_activityInfo_list(self):
         """
         运营活动配置列表
         :return:
@@ -23,7 +23,7 @@ class OperationActivityConfiguration(UrineWebInterfaceTestCase):
         self.assertIsNotNone(activityInfo_list)
         gl.set_value('activityInfo_list', activityInfo_list)
 
-    def test_web_urine_v2_activityInfo_update(self):
+    def test_urine_v2_activityInfo_update(self):
         """
         更新运营活动配置信息
         :return:

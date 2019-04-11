@@ -2,12 +2,14 @@
 """推荐商品管理"""
 
 import sys
+import run.globalvar as gl
+import time
 
 from run.common_test_set import UrineWebInterfaceTestCase
 
 class RecommendedCommodityManagement(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_recommendGoodsInfo_list(self):
+    def test_urine_v2_recommendGoodsInfo_list(self):
         """
         推荐商品列表
         :return:
@@ -31,3 +33,22 @@ class RecommendedCommodityManagement(UrineWebInterfaceTestCase):
                 recommend_goodsInfo_list = res[0].json()['data']
                 self.assertIn(actual_result, expect_result)
                 self.assertIsNotNone(recommend_goodsInfo_list)
+
+    def test_urine_v2_recommendGoodsInfo_add(self):
+        """
+        添加推荐商品
+        :return:
+        """
+        func_name = sys._getframe().f_code.co_name
+        recommended_commodity_info = self.get_request_data(func_name)
+        expect_result = self.get_expect_result(func_name)
+        recommended_commodity_info['recommendGoodsPicUrl'] += gl.get_value('hash')
+        for date in ['recommendGoodsShowStartDate', 'recommendGoodsShowEndDate', 'recommendGoodsStartDate', 'recommendGoodsEndDate']:
+            recommended_commodity_info[date] = int(time.time()*1000)
+        for show_type in range(2):
+            for use_type in range(3):
+                recommended_commodity_info['useType'] = use_type
+                recommended_commodity_info['showType'] = show_type
+                res = self.get_result(func_name, var_params=recommended_commodity_info)
+                actual_result = res[0].json()['data']
+                self.assertIn(actual_result, expect_result)

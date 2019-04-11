@@ -7,7 +7,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class RefundRecord(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_order_refundLogList(self):
+    def test_urine_v2_order_refundLogList(self):
         """
         查询所有退款记录
         :return:

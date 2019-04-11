@@ -12,7 +12,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class SmallProgramBannerManagement(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_bannerInfo_add(self):
+    def test_urine_v2_bannerInfo_add(self):
         """
         添加小程序banner
         :return:
@@ -32,7 +32,7 @@ class SmallProgramBannerManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_bannerInfo_list(self):
+    def test_urine_v2_bannerInfo_list(self):
         """
         小程序banner列表
         :return:
@@ -46,7 +46,7 @@ class SmallProgramBannerManagement(UrineWebInterfaceTestCase):
         gl.set_value('banner_list', res[0].json()['data'])
         # return res[0].json()
 
-    def test_web_urine_v2_bannerInfo_update(self):
+    def test_urine_v2_bannerInfo_update(self):
         """
         修改小程序banner
         :return:
@@ -76,7 +76,7 @@ class SmallProgramBannerManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_bannerInfo_moveupdown(self):
+    def test_urine_v2_bannerInfo_moveupdown(self):
         """
         交换小程序banner序号
         :return:
@@ -98,7 +98,7 @@ class SmallProgramBannerManagement(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_bannerInfo_delete(self):
+    def test_urine_v2_bannerInfo_delete(self):
         """
         删除小程序banner
         :return:

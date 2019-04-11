@@ -8,7 +8,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 import run.globalvar as gl
 
 class LoginSystem(UrineWebInterfaceTestCase):
-    def test_web_urine_v2_adminInfo_login(self):
+    def test_urine_v2_adminInfo_login(self):
         """
         登录系统
         :return:
@@ -24,7 +24,7 @@ class LoginSystem(UrineWebInterfaceTestCase):
         gl.set_value('cookies', res[1])
         gl.set_value('hash', hash)
 
-    def test_web_urine_v2_adminInfo_modifyPassword(self):
+    def test_urine_v2_adminInfo_modifyPassword(self):
         """
         修改登录密码
         :return:

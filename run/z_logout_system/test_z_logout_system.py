@@ -8,7 +8,7 @@ import sys
 from run.common_test_set import UrineWebInterfaceTestCase
 
 class LogoutSystem(UrineWebInterfaceTestCase):
-    def test_web_urine_v2_adminInfo_loginOut(self):
+    def test_urine_v2_adminInfo_loginOut(self):
         """
         退出登录
         :return:

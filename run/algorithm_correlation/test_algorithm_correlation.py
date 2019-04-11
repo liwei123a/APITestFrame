@@ -21,7 +21,7 @@ class AlgorithmCorrelation(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_recheck_urineResult(self):
+    def test_urine_v2_recheck_urineResult(self):
         """
         尿检报告列表
         :return:
@@ -33,7 +33,7 @@ class AlgorithmCorrelation(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_recheck_report(self):
+    def test_urine_v2_recheck_report(self):
         """
         尿检报告统计
         :return:
@@ -45,7 +45,7 @@ class AlgorithmCorrelation(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.update_result(row, actual_result, expect_result)
 
-    def test_web_urine_v2_recheck_getRecheck(self):
+    def test_urine_v2_recheck_getRecheck(self):
         """
         尿检报告详细
         :return:

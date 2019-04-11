@@ -7,7 +7,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class CouponRecord(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_couponGiftLog_couponGiftLogList(self):
+    def test_urine_v2_couponGiftLog_couponGiftLogList(self):
         """
         查询优惠券记录
         :return:

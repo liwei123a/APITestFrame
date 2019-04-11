@@ -7,7 +7,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class StrategyManagementOfVideoEditionAdvertising(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_adPlanInfo_saveAdPlan(self):
+    def test_urine_v2_adPlanInfo_saveAdPlan(self):
         """
         添加视频广告策略
         :return:
@@ -33,7 +33,7 @@ class StrategyManagementOfVideoEditionAdvertising(UrineWebInterfaceTestCase):
         actual_errmsg = res[0].json()['errmsg']
         self.assertIn(actual_errmsg, expect_errmsg)
 
-    def test_web_urine_v2_adPlanInfo_adPlanList(self):
+    def test_urine_v2_adPlanInfo_adPlanList(self):
         """
         查询策略列表
         :return:
@@ -46,7 +46,7 @@ class StrategyManagementOfVideoEditionAdvertising(UrineWebInterfaceTestCase):
         expect_result = self.get_expect_result(func_name)
         self.assertTrue(eval(expect_result))
 
-    def test_web_urine_v2_adPlanInfo_canBeDelete(self):
+    def test_urine_v2_adPlanInfo_canBeDelete(self):
         """
         视频广告策略能否被删除
         :return:
@@ -69,7 +69,7 @@ class StrategyManagementOfVideoEditionAdvertising(UrineWebInterfaceTestCase):
                 key_id_list.append(key_id['keyId'])
         gl.set_value('key_id_list', key_id_list)
 
-    def test_web_urine_v2_adPlanInfo_deleteAdPlan(self):
+    def test_urine_v2_adPlanInfo_deleteAdPlan(self):
         """
         删除视频广告策略
         :return:

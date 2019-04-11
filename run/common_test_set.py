@@ -124,7 +124,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
             self.run_case.case_info.update_actual_result(self.actual_result, row, 'fail')
         self.assertIn(actual_result, expect_result)
 
-    def web_urine_v2_qiniu_getToken(self):
+    def urine_v2_qiniu_getToken(self):
         """
         获取七牛token
         :return:
@@ -139,7 +139,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        token = self.web_urine_v2_qiniu_getToken()['data']['token']
+        token = self.urine_v2_qiniu_getToken()['data']['token']
         conf_read = ConfReader(self.datadir)
         file_path = conf_read.get_file_path( self.dirsec, self.dir3, self.namesec, self.file3)
         file_name = conf_read.get_file_name( self.namesec, self.file3)
@@ -150,7 +150,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         res = self.get_result(func_name, fileparams=fileparams)
         return res[0].json()
 
-    def web_urine_v2_cityAreaSettingInfo_getAllCitys(self):
+    def urine_v2_cityAreaSettingInfo_getAllCitys(self):
         """
         获取城市列表
         :return:
@@ -159,7 +159,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         res = self.get_result(func_name)
         return res[0].json()['data']
 
-    def web_urine_v2_buildingInfo_queryAllBuildingInfo(self):
+    def urine_v2_buildingInfo_queryAllBuildingInfo(self):
         """
         获取楼宇列表
         :return:

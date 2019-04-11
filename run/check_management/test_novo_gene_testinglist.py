@@ -7,7 +7,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class NovoGeneTestinglist(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_urineInfoList_getGeneOrderList(self):
+    def test_urine_v2_urineInfoList_getGeneOrderList(self):
         """
         查询基因检测列表
         :return:

@@ -9,7 +9,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class UrineHealthChecklist(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_urineInfoList_getRecords(self):
+    def test_urine_v2_urineInfoList_getRecords(self):
         """
         查询尿液健康检测记录
         :return:
@@ -59,7 +59,7 @@ class UrineHealthChecklist(UrineWebInterfaceTestCase):
                 urineinfolist.remove(urineinfo)
         gl.set_value('urineinfolist', urineinfolist)
 
-    def test_web_urine_v2_urineInfoList_getResult(self):
+    def test_urine_v2_urineInfoList_getResult(self):
         """
         查看尿液检测报告
         :return:

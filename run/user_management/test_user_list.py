@@ -9,7 +9,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class UserList(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_couponManager_getAllCouponRules(self):
+    def test_urine_v2_couponManager_getAllCouponRules(self):
         """
         查询所有优惠券
         :return:
@@ -24,7 +24,7 @@ class UserList(UrineWebInterfaceTestCase):
         self.update_result(row, errmsg, expect_errmsg)
         self.assertGreaterEqual(couponrule_list.__len__(), 0)
 
-    def test_web_urine_v2_userInfo_getUserList(self):
+    def test_urine_v2_userInfo_getUserList(self):
         """
         查询用户列表
         :return:
@@ -41,7 +41,7 @@ class UserList(UrineWebInterfaceTestCase):
         user_info = res[0].json()['data']['list'][0]
         self.assertEqual(user_phone['phone'], user_info['phone'])
 
-    def test_web_urine_v2_userInfo_giftCoupons(self):
+    def test_urine_v2_userInfo_giftCoupons(self):
         """
         赠送优惠券
         :return:

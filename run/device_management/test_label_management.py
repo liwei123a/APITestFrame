@@ -10,7 +10,7 @@ from run.common_test_set import UrineWebInterfaceTestCase
 
 class MachineManagement(UrineWebInterfaceTestCase):
 
-    def test_web_urine_v2_labelInfo_labelList(self):
+    def test_urine_v2_labelInfo_labelList(self):
         """
         查询标签列表
         :return:
