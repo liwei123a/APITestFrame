@@ -15,7 +15,7 @@ class AlgorithmCorrelation(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = 'test_app_dw-urinalysis-panel_manager_recheck'
-        res = self.get_result(func_name)
+        res = self.get_result(func_name, domain=True)
         actual_result = re.findall(r'<title>\s+(.+)\s+</title>', res[0].text)[0]
         row = self.get_case_row_index(func_name)
         expect_result = self.get_expect_result(func_name)

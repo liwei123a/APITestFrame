@@ -28,6 +28,8 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
     file3 = 'pic_file'
     sheet_id = 0
     colsec = 'columns'
+    dmsec = 'domain'
+    domain_name = 'domain_name'
 
     @classmethod
     def setUpClass(cls):
@@ -35,7 +37,8 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         从excel表格读取测试用例
         :return:
         """
-        cls.run_case = RunCase(cls.datadir, cls.dirsec, cls.dir1, cls.dir2, cls.namesec, cls.file1, cls.file2, cls.sheet_id, cls.colsec)
+        cls.run_case = RunCase(cls.datadir, cls.dirsec, cls.dir1, cls.dir2, cls.namesec, cls.file1,
+                               cls.file2, cls.sheet_id, cls.colsec, cls.dmsec, cls.domain_name)
 
     def get_case_row_index(self, func_name):
         """
@@ -52,7 +55,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         row = self.run_case.case_info.get_row_index(col_index, case_url)
         return row
 
-    def get_result(self, func_name, fileparams=None, var_params=None):
+    def get_result(self, func_name, fileparams=None, var_params=None, domain=False):
         """
         执行用例，并返回结果
         :param func_name:
@@ -63,7 +66,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
         row = self.get_case_row_index(func_name)
         cookies = gl.get_value('cookies')
         res = self.run_case.execution_request(self.url, self.request_method, self.header,
-                                              self.request_field, fileparams, var_params, row, cookies)
+                                              self.request_field, fileparams, var_params, row, cookies, domain)
         return res
 
     def get_expect_result(self, func_name):
@@ -147,7 +150,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
             'token': (None, token),
             'file': (file_name, open(file_path, 'rb'), 'image/jpeg')
         }
-        res = self.get_result(func_name, fileparams=fileparams)
+        res = self.get_result(func_name, fileparams=fileparams, domain=True)
         return res[0].json()
 
     def urine_v2_cityAreaSettingInfo_getAllCitys(self):

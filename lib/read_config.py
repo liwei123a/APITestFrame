@@ -43,3 +43,13 @@ class ConfReader(object):
         login_info['database'] = self.conf.get(dbsec, database)
         login_info['charset'] = self.conf.get(dbsec, charset)
         return login_info
+
+    def get_domain_name(self, dmsec, domain_name):
+        """
+        获取域名
+        :param dmsec:
+        :param domain_name:
+        :return:
+        """
+        domain_name = self.conf.get(dmsec, domain_name)
+        return domain_name
