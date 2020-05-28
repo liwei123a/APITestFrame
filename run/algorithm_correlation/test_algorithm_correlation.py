@@ -8,7 +8,7 @@ import sys
 import re
 from run.common_test_set import UrineWebInterfaceTestCase
 
-class AlgorithmCorrelation(UrineWebInterfaceTestCase):
+class TestAlgorithmCorrelation(UrineWebInterfaceTestCase):
     def test_app_dw_urinalysis_panel_manager_recheck(self):
         """
         尿检复核列表

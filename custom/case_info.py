@@ -84,7 +84,7 @@ class CaseInfo(object):
         for x in col_values:
             if cell_value in x:
                 row_index.append(col_values.index(x))
-        return row_index[0]
+        return row_index[0] + 1
 
     def get_col_index(self, col_name):
         col_index = int(self.excel.conf.get(self.col_section, col_name))

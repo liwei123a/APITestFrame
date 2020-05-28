@@ -1,12 +1,10 @@
-import unittest
 import re
 import sys
 from lib.read_config import ConfReader
 from run.run_setup import RunCase
 import run.globalvar as gl
 
-
-class UrineWebInterfaceTestCase(unittest.TestCase):
+class UrineWebInterfaceTestCase():
 
     url = 'url'
     request_method = 'request_method'
@@ -26,19 +24,19 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
     file1 = 'case_file'
     file2 = 'data_file'
     file3 = 'pic_file'
-    sheet_id = 0
+    sheet_id = 'test_case'
     colsec = 'columns'
     dmsec = 'domain'
     domain_name = 'domain_name'
 
-    @classmethod
-    def setUpClass(cls):
+    # @classmethod
+    def setup_class(self):
         """
         从excel表格读取测试用例
         :return:
         """
-        cls.run_case = RunCase(cls.datadir, cls.dirsec, cls.dir1, cls.dir2, cls.namesec, cls.file1,
-                               cls.file2, cls.sheet_id, cls.colsec, cls.dmsec, cls.domain_name)
+        self.run_case = RunCase(self.datadir, self.dirsec, self.dir1, self.dir2, self.namesec, self.file1,
+                               self.file2, self.sheet_id, self.colsec, self.dmsec, self.domain_name)
 
     def get_case_row_index(self, func_name):
         """
@@ -125,7 +123,7 @@ class UrineWebInterfaceTestCase(unittest.TestCase):
             self.run_case.case_info.update_actual_result(self.actual_result, row, 'pass')
         else:
             self.run_case.case_info.update_actual_result(self.actual_result, row, 'fail')
-        self.assertIn(actual_result, expect_result)
+            assert actual_result in expect_result
 
     def urine_v2_qiniu_getToken(self):
         """

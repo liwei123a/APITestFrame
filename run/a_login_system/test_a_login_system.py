@@ -7,7 +7,7 @@ import sys
 from run.common_test_set import UrineWebInterfaceTestCase
 import run.globalvar as gl
 
-class LoginSystem(UrineWebInterfaceTestCase):
+class TestLoginSystem(UrineWebInterfaceTestCase):
     def test_urine_v2_adminInfo_login(self):
         """
         登录系统

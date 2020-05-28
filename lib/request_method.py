@@ -1,5 +1,9 @@
 #coding:utf-8
 
+"""
+封装requests库
+"""
+
 import requests
 
 class ReqMethod(object):
@@ -10,12 +14,20 @@ class ReqMethod(object):
         self.cookies = cookies
 
     def get_method(self):
+        """
+        封装get请求
+        :return:
+        """
         res = requests.get(url=self.url, params=self.params, headers=self.header, cookies=self.cookies,
                            verify=False)
         self.cookies = res.cookies.get_dict()
         return res
 
     def post_method(self):
+        """
+        封装post请求
+        :return:
+        """
         if self.header['content-type'] == 'application/json':
             res = requests.post(url=self.url, json=self.params, headers=self.header, cookies=self.cookies,
                                 verify=False)
@@ -28,9 +40,18 @@ class ReqMethod(object):
         return res
 
     def get_cookies(self):
+        """
+        获取cookie
+        :return:
+        """
         return self.cookies
 
     def req_send(self, method):
+        """
+        根据请求类型调用对应的请求
+        :param method:
+        :return:
+        """
         method = method.upper()
         if method == "GET":
             return self.get_method()
