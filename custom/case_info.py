@@ -10,15 +10,15 @@ class CaseInfo(object):
         self.col_section = colsec
 
     def get_id(self, id, row):
-        col = self.excel.conf.get(self.col_section, id)
+        col = self.excel.conf.get_field_value(self.col_section, id)
         return self.excel.get_cell_value(row, col)
 
     def get_title(self, title, row):
-        col = self.excel.conf.get(self.col_section, title)
+        col = self.excel.conf.get_field_value(self.col_section, title)
         return self.excel.get_cell_value(row, col)
 
     def get_url(self, url, row):
-        col = self.excel.conf.get(self.col_section, url)
+        col = self.excel.conf.get_field_value(self.col_section, url)
         return self.excel.get_cell_value(row, col)
 
     # def get_is_run(self, is_run, row):
@@ -32,11 +32,11 @@ class CaseInfo(object):
     #     return flag
 
     def get_request_method(self, request_method, row):
-        col = self.excel.conf.get(self.col_section, request_method)
+        col = self.excel.conf.get_field_value(self.col_section, request_method)
         return self.excel.get_cell_value(row, col)
 
     def get_header(self, take_header, row):
-        col = self.excel.conf.get(self.col_section, take_header)
+        col = self.excel.conf.get_field_value(self.col_section, take_header)
         header = self.excel.get_cell_value(row, col)
         if header == '':
             return None
@@ -60,7 +60,7 @@ class CaseInfo(object):
     #         return depend_field
 
     def get_request_field(self, request_field, row):
-        col = self.excel.conf.get(self.col_section, request_field)
+        col = self.excel.conf.get_field_value(self.col_section, request_field)
         return self.excel.get_cell_value(row, col)
 
     def get_request_data(self, request_field, row):
@@ -71,11 +71,11 @@ class CaseInfo(object):
             return None
 
     def get_expect_result(self, expect_result, row):
-        col = self.excel.conf.get(self.col_section, expect_result)
+        col = self.excel.conf.get_field_value(self.col_section, expect_result)
         return self.excel.get_cell_value(row, col)
 
     def update_actual_result(self, actual_result, row, value):
-        col = self.excel.conf.get(self.col_section, actual_result)
+        col = self.excel.conf.get_field_value(self.col_section, actual_result)
         return self.excel.write_cell_value(row, col, value)
 
     def get_row_index(self, col, cell_value):
@@ -87,5 +87,5 @@ class CaseInfo(object):
         return row_index[0] + 1
 
     def get_col_index(self, col_name):
-        col_index = int(self.excel.conf.get(self.col_section, col_name))
+        col_index = int(self.excel.conf.get_field_value(self.col_section, col_name))
         return col_index

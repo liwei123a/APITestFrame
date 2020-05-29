@@ -106,7 +106,7 @@ class MachineManagement(UrineWebInterfaceTestCase):
         """默认查询所有机器"""
         res = self.get_result(func_name, var_params=machineinfo_copy)
         totalCount = res[0].json()['data']['totalCount']
-        self.assertTrue(totalCount>0)
+        assert totalCount > 0
         """根据机器编号查询"""
         query['machineID'] = query_machineinfo['machineID']
         res = self.get_result(func_name, var_params=query)

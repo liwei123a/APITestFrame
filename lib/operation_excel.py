@@ -9,13 +9,12 @@ import os
 import configparser
 from xlutils.copy import copy
 from openpyxl import Workbook,load_workbook
-
+from lib.read_config import ConfReader
 
 class OperationExcel(object):
     def __init__(self, datadir, dirsec, filedir, namesec, filename, sheetID):
-        self.conf = configparser.ConfigParser()
-        self.conf.read(datadir)
-        self.file = os.path.join(self.conf.get(dirsec, filedir), self.conf.get(namesec, filename))
+        self.conf = ConfReader(datadir)
+        self.file = self.conf.get_file_path(dirsec,filedir,namesec,filename)
         # self.tables = xlrd.open_workbook(self.file)
         self.tables = load_workbook(self.file)
         self.sheetID = sheetID

@@ -14,7 +14,6 @@ class TestLogin(UrineWebInterfaceTestCase):
         :return:
         """
         func_name = sys._getframe().f_code.co_name
-        gl._init()
         res = self.get_result(func_name)
         actual_result = str(res[0].json()['code'])
         row = self.get_case_row_index(func_name)
