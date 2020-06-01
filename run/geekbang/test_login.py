@@ -4,10 +4,12 @@
 """
 
 import sys
+import pytest
 from run.common_test_set import UrineWebInterfaceTestCase
 import run.globalvar as gl
 
 class TestLogin(UrineWebInterfaceTestCase):
+    @pytest.mark.run(order=1)
     def test_account_ticket_login(self):
         """
         登录系统

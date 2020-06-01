@@ -5,6 +5,7 @@ from run.run_setup import RunCase
 import run.globalvar as gl
 from lib.send_email import SendEmail
 
+
 class UrineWebInterfaceTestCase():
 
     id = 'id'
@@ -48,31 +49,6 @@ class UrineWebInterfaceTestCase():
         """
         self.run_case = RunCase(self.datadir, self.dirsec, self.dir1, self.dir2, self.namesec, self.file1,
                                self.file2, self.sheet_id, self.colsec, self.dmsec, self.domain_name)
-        gl._init()
-        gl.set_value('pass_case_list', [])
-        gl.set_value('fail_case_list', [])
-
-    def teardown_class(self):
-        """
-        发送邮件
-        :return:
-        """
-        cf = ConfReader(self.datadir)
-        pass_case_num = len(gl.get_value('pass_case_list'))
-        fail_case_num = len(gl.get_value('fail_case_list'))
-        total_case_num = pass_case_num + fail_case_num
-        pass_rate = "%.2f%%" % (pass_case_num/total_case_num*100)
-        fail_rate = "%.2f%%" % (fail_case_num/total_case_num*100)
-        smtpserver = cf.get_field_value(self.emailsec, self.smtpserver)
-        sender = cf.get_field_value(self.emailsec, self.sender)
-        password = cf.get_field_value(self.emailsec, self.password)
-        receiver = cf.get_field_value(self.emailsec, self.receiver).split(",")
-        username = cf.get_field_value(self.emailsec, self.username)
-        subject = cf.get_field_value(self.emailsec, self.subject)
-        content = cf.get_field_value(self.emailsec, self.content) % (total_case_num, pass_case_num, fail_case_num, pass_rate, fail_rate)
-        filename = cf.get_field_value(self.emailsec, self.filename)
-        send_email = SendEmail(smtpserver, sender, password)
-        send_email.send(username, receiver, subject, content, filename)
 
     def get_case_row_index(self, func_name):
         """
@@ -89,7 +65,7 @@ class UrineWebInterfaceTestCase():
         row = self.run_case.case_info.get_row_index(col_index, case_url)
         return row
 
-    def get_result(self, func_name, fileparams=None, var_params=None, domain=False):
+    def get_result(self, func_name, fileparams=None, var_params=None, domain=True):
         """
         执行用例，并返回结果
         :param func_name:
@@ -206,3 +182,26 @@ class UrineWebInterfaceTestCase():
         func_name = sys._getframe().f_code.co_name
         res = self.get_result(func_name)
         return res[0].json()['data']
+
+    def send_email(self):
+        """
+        发送邮件
+        :return:
+        """
+        cf = ConfReader(self.datadir)
+        pass_case_num = len(gl.get_value('pass_case_list'))
+        fail_case_num = len(gl.get_value('fail_case_list'))
+        total_case_num = pass_case_num + fail_case_num
+        print(pass_case_num, fail_case_num)
+        pass_rate = "%.2f%%" % (pass_case_num/total_case_num*100)
+        fail_rate = "%.2f%%" % (fail_case_num/total_case_num*100)
+        smtpserver = cf.get_field_value(self.emailsec, self.smtpserver)
+        sender = cf.get_field_value(self.emailsec, self.sender)
+        password = cf.get_field_value(self.emailsec, self.password)
+        receiver = cf.get_field_value(self.emailsec, self.receiver).split(",")
+        username = cf.get_field_value(self.emailsec, self.username)
+        subject = cf.get_field_value(self.emailsec, self.subject)
+        content = cf.get_field_value(self.emailsec, self.content) % (total_case_num, pass_case_num, fail_case_num, pass_rate, fail_rate)
+        filename = cf.get_field_value(self.emailsec, self.filename)
+        send_email = SendEmail(smtpserver, sender, password)
+        send_email.send(username, receiver, subject, content, filename)

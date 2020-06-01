@@ -65,10 +65,9 @@ class CaseInfo(object):
 
     def get_request_data(self, request_field, row):
         field = self.get_request_field(request_field, row)
-        if field != '':
-            return self.json_data.get_field_value(field)
-        else:
-            return None
+        if field != None:
+            field = self.json_data.get_field_value(field)
+        return field
 
     def get_expect_result(self, expect_result, row):
         col = self.excel.conf.get_field_value(self.col_section, expect_result)
