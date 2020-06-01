@@ -17,7 +17,7 @@ class UrineWebInterfaceTestCase():
     request_field = 'request_field'
     expect_result = 'expect_result'
     actual_result = 'actual_result'
-    datadir = '../config/data_source.ini'
+    datadir = 'config/data_source.ini'
     dirsec = 'path'
     dir1 = 'case_dir'
     dir2 = 'data_dir'
